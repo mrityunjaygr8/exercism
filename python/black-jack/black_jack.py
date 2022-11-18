@@ -5,7 +5,7 @@ How to play blackjack:    https://bicyclecards.com/how-to-play/blackjack/
 """
 
 
-def value_of_card(card):
+def value_of_card(card: str):
     """Determine the scoring value of a card.
 
     :param card: str - given card.
@@ -16,10 +16,17 @@ def value_of_card(card):
     3.  '2' - '10' = numerical value.
     """
 
-    pass
+    if card in ["J", "K", "Q"]:
+        return 10
+    if card == "A":
+        return 1
+    if card.isnumeric() and 2 <= int(card) <= 10:
+        return int(card)
+
+    return 0
 
 
-def higher_card(card_one, card_two):
+def higher_card(card_one: str, card_two: str):
     """Determine which card has a higher value in the hand.
 
     :param card_one, card_two: str - cards dealt in hand.  See below for values.
@@ -30,7 +37,15 @@ def higher_card(card_one, card_two):
     3.  '2' - '10' = numerical value.
     """
 
-    pass
+    v_one = value_of_card(card_one)
+    v_two = value_of_card(card_two)
+    if v_one < v_two:
+        return card_two
+
+    if v_two < v_one:
+        return card_one
+
+    return (card_one, card_two)
 
 
 def value_of_ace(card_one, card_two):
@@ -44,7 +59,19 @@ def value_of_ace(card_one, card_two):
     3.  '2' - '10' = numerical value.
     """
 
-    pass
+    v_one = value_of_card(card_one)
+    v_two = value_of_card(card_two)
+
+
+    if card_one == "A":
+        v_one = 11
+    if card_two == "A":
+        v_two = 11
+
+    sum_cards = v_one + v_two
+    if sum_cards <= 10:
+        return 11
+    return 1
 
 
 def is_blackjack(card_one, card_two):
@@ -57,8 +84,11 @@ def is_blackjack(card_one, card_two):
     2.  'A' (ace card) = 11 (if already in hand)
     3.  '2' - '10' = numerical value.
     """
+    face_cards = ["J", "Q", "K", "10"]
+    if (card_one in face_cards and card_two == "A") or (card_two in face_cards and card_one == "A"):
+        return True
 
-    pass
+    return False
 
 
 def can_split_pairs(card_one, card_two):
@@ -68,7 +98,10 @@ def can_split_pairs(card_one, card_two):
     :return: bool - can the hand be split into two pairs? (i.e. cards are of the same value).
     """
 
-    pass
+    v_one = value_of_card(card_one)
+    v_two = value_of_card(card_two)
+
+    return v_one == v_two
 
 
 def can_double_down(card_one, card_two):
@@ -78,4 +111,4 @@ def can_double_down(card_one, card_two):
     :return: bool - can the hand can be doubled down? (i.e. totals 9, 10 or 11 points).
     """
 
-    pass
+    return 9 <= value_of_card(card_one) + value_of_card(card_two) <= 11
