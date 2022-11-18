@@ -1,10 +1,13 @@
+import math
+import secrets
+
 def private_key(p):
-    pass
+    return secrets.randbelow(p-2) + 2 
 
 
 def public_key(p, g, private):
-    pass
+    return int(math.pow(g, private)) % p
 
 
 def secret(p, public, private):
-    pass
+   return int(math.pow(public, private)) % p 
