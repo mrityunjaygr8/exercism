@@ -13,11 +13,53 @@ You can learn more here: https://en.wikipedia.org/wiki/Enumerated_type
 
 # Possible sublist categories.
 # Change the values as you see fit.
-SUBLIST = None
-SUPERLIST = None
-EQUAL = None
-UNEQUAL = None
+SUBLIST = "sublist"
+SUPERLIST = "superlist"
+EQUAL = "equal"
+UNEQUAL = "unequal"
+
+def is_present(list_one, list_two):
+    len_one = len(list_one)
+    len_two = len(list_two)
+    if set(list_one).issuperset(set(list_two)):
+        for x in range(len_one - len_two + 1):
+            if list_one[x:x+len_two] == list_two:
+                print(list_one[x:x+len_two], list_two)
+                return True
+
+    return False
 
 
 def sublist(list_one, list_two):
-    pass
+    len_one = len(list_one)
+    len_two = len(list_two)
+    if len_one == len_two and list_one == list_two:
+        return EQUAL
+
+    present = False
+
+    if len_two < len_one:
+        if len_two == 0:
+            return SUPERLIST
+    
+
+        present = is_present(list_one, list_two)
+
+        if present:
+            return SUPERLIST
+        else:
+            return UNEQUAL
+
+
+    if len_one < len_two:
+        if len_one == 0:
+            return SUBLIST
+
+        present = is_present(list_two, list_one)
+
+        if present:
+            return SUBLIST
+        else:
+            return UNEQUAL
+
+    return UNEQUAL
